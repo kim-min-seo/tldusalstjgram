@@ -3,6 +3,8 @@
 #spring.thymeleaf.cache=false
 
 spring:
+  mvc:
+    static-path-pattern: /static/**			
   config:
     import: security.yml			
   datasource:
