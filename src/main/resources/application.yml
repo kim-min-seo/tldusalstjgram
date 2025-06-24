@@ -1,0 +1,18 @@
+#spring.application.name=tldusalstjgram
+#
+#spring.thymeleaf.cache=false
+
+spring:
+  config:
+    import: security.yml			
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tldusalstjgram_minse0
+    username: Minse0
+    password: ${mysql.password}  							
+  thymeleaf:
+    cache: false
+  application:
+    name: tldusalstjgram
+mybatis:
+  mapper-locations: mappers /*Mapper.xml	 						
