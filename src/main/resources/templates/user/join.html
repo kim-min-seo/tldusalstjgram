@@ -14,7 +14,7 @@
 	        <input type="text" class="form-control rounded-3" id="idInput" placeholder="아이디">
 	      </div>
 	      <div class="col-4">
-	        <button type="button" class="btn btn-dark w-100 rounded-3">중복확인</button>
+	        <button type="button" class="btn btn-dark w-100 rounded-3" id="duplicateBtn">중복확인</button>
 	      </div>
 	    </div>
 	
@@ -32,48 +32,76 @@
 	</section>
 
 	<script layout:fragment="script">
-		$("#joinBtn").on("click", function(){
-			
-			let id = $("#idInput").val();
-			let password = $("#passwordInput").val();
-			let name = $("#nameInput").val();
-			let nickname = $("#nicknameInput").val();
-			
-			if(id.trim() == ""){
-				alert("아이디를 입력하세요!");
-				return;
-			}
-			
-			if(password == ""){
-				alert("비밀번호를 입력하세요!");
-				return;
-			}
-			
-			if(name == ""){
-				alert("성명을 입력하세요!");
-				return;
-			}
-			
-			if(nickname == ""){
-				alert("사용자 이름을 입력하세요!");
-				return;
-			}
-			
-			$.ajax({
-				type:"post"
-				, url:"/user/join"
-				, data:{"loginId":id, "password":password, "name":name, "nickname":nickname}
-				, success:function(response){
-					if(response.result == "success"){
-						location.href = "/user/login-view";
-					} else{
-						alert("회원 가입 실패!")
-					}
-				}
-				, error:function(){
-					alert("회원 가입 에러!")
-				}
-			})
-		});
+	  $(document).ready(function () {
+	    $("#duplicateBtn").on("click", function () {
+	      const id = $("#idInput").val().trim();
+
+	      if (id === "") {
+	        alert("아이디를 입력해주세요!");
+	        return;
+	      }
+
+	      $.ajax({
+	        type: "GET",
+	        url: "/user/is-duplicated-id",
+	        data: { loginId: id },
+	        success: function (response) {
+	          if (response.result === true) {
+	            alert("이미 사용 중인 아이디입니다.");
+	          } else {
+	            alert("사용 가능한 아이디입니다.");
+	          }
+	        },
+	        error: function () {
+	          alert("중복 확인 중 오류가 발생했습니다.");
+	        }
+	      });
+	    });
+
+	    $("#joinBtn").on("click", function () {
+	      const id = $("#idInput").val().trim();
+	      const password = $("#passwordInput").val().trim();
+	      const name = $("#nameInput").val().trim();
+	      const nickname = $("#nicknameInput").val().trim();
+
+	      if (id === "") {
+	        alert("아이디를 입력하세요!");
+	        return;
+	      }
+	      if (password === "") {
+	        alert("비밀번호를 입력하세요!");
+	        return;
+	      }
+	      if (name === "") {
+	        alert("성명을 입력하세요!");
+	        return;
+	      }
+	      if (nickname === "") {
+	        alert("사용자 이름을 입력하세요!");
+	        return;
+	      }
+
+	      $.ajax({
+	        type: "POST",
+	        url: "/user/join",
+	        data: {
+	          loginId: id,
+	          password: password,
+	          name: name,
+	          nickname: nickname
+	        },
+	        success: function (response) {
+	          if (response.result === "success") {
+	            location.href = "/user/login-view";
+	          } else {
+	            alert("회원 가입 실패!");
+	          }
+	        },
+	        error: function () {
+	          alert("회원 가입 요청 중 에러가 발생했습니다.");
+	        }
+	      });
+	    });
+	  });
 	</script>
-</html>
+	</html>

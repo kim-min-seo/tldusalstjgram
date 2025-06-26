@@ -3,11 +3,13 @@ package com.minse0.tldusalstjgram.user;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.minse0.tldusalstjgram.user.domain.User;
 import com.minse0.tldusalstjgram.user.service.UserService;
 
 //API 구성을 위한 Controller
@@ -37,4 +39,21 @@ public class UserRestController {
 		}
 		return resultMap;
 	}
+	
+	@GetMapping("/is-duplicated-id")
+	public Map<String, Object> isDuplicatedId(@RequestParam("loginId") String loginId) {
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    User user = userService.getUserByLoginId(loginId);
+	    if(user != null) {
+	    	result.put("code", 1);
+	    	result.put("result", true);
+	    } else {
+	    	result.put("code", 1);
+	    	result.put("result", false);
+	    }
+	    return result;
+	
+	}
+	
 }

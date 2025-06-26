@@ -22,4 +22,10 @@
 	 	, #{nickname}
 	 )		
 	</insert>
+	
+	<select id="selectUserByLoginId" parameterType="String" resultType="com.minse0.tldusalstjgram.user.domain.User">
+    SELECT * FROM `user`
+    WHERE loginId = #{loginId}
+</select>
+	
 </mapper> 

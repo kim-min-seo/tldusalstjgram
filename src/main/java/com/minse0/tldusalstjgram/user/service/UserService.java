@@ -3,6 +3,7 @@ package com.minse0.tldusalstjgram.user.service;
 import org.springframework.stereotype.Service;
 
 import com.minse0.tldusalstjgram.common.MD5HashingEncoder;
+import com.minse0.tldusalstjgram.user.domain.User;
 import com.minse0.tldusalstjgram.user.repository.UserRepository;
 
 @Service
@@ -32,4 +33,9 @@ public class UserService {
 				return false;
 			}
 		}
+		
+		public User getUserByLoginId(String loginId) {
+		    return userRepository.selectUserByLoginId(loginId);
+		}
+
 }
