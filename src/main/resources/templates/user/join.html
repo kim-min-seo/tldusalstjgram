@@ -3,32 +3,77 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}">
+	
+	<section layout:fragment="contents" class="contents d-flex justify-content-center">
+	  <div class="user-box memo-bg">
+	    <h2 class="text-center mb-4">tldusalstjgram</h2>
+	
+	    
+	    <div class="row gx-2 mb-4">
+	      <div class="col-8">
+	        <input type="text" class="form-control rounded-3" id="idInput" placeholder="아이디">
+	      </div>
+	      <div class="col-4">
+	        <button type="button" class="btn btn-dark w-100 rounded-3">중복확인</button>
+	      </div>
+	    </div>
+	
+	    <input type="password" class="form-control mb-4 rounded-3" id="passwordInput" placeholder="비밀번호">
+	    <input type="text" class="form-control mb-4 rounded-3" id="nameInput" placeholder="성명">
+	    <input type="text" class="form-control mb-4 rounded-3" id="nicknameInput" placeholder="사용자 이름">
+	
+	    <button type="button" class="btn btn-dark w-100 rounded-3 mb-4" id="joinBtn">회원가입</button>
+	
+	    <div class="text-center mt-4">
+	      계정이 있으신가요?
+	      <a href="/user/login-view">로그인</a>
+	    </div>
+	  </div>
+	</section>
 
-<section layout:fragment="contents" class="contents d-flex justify-content-center">
-  <div class="user-box memo-bg">
-    <h2 class="text-center mb-4">tldusalstjgram</h2>
-
-    
-    <div class="row gx-2 mb-4">
-      <div class="col-8">
-        <input type="text" class="form-control rounded-3" placeholder="아이디">
-      </div>
-      <div class="col-4">
-        <button type="button" class="btn btn-dark w-100 rounded-3">중복확인</button>
-      </div>
-    </div>
-
-    <input type="password" class="form-control mb-4 rounded-3" placeholder="비밀번호">
-    <input type="text" class="form-control mb-4 rounded-3" placeholder="성명">
-    <input type="text" class="form-control mb-4 rounded-3" placeholder="사용자 이름">
-
-    <button type="button" class="btn btn-dark w-100 rounded-3 mb-4">회원가입</button>
-
-    <div class="text-center mt-4">
-      계정이 있으신가요?
-      <a href="/user/login-view">로그인</a>
-    </div>
-  </div>
-</section>
-
+	<script layout:fragment="script">
+		$("#joinBtn").on("click", function(){
+			
+			let id = $("#idInput").val();
+			let password = $("#passwordInput").val();
+			let name = $("#nameInput").val();
+			let nickname = $("#nicknameInput").val();
+			
+			if(id.trim() == ""){
+				alert("아이디를 입력하세요!");
+				return;
+			}
+			
+			if(password == ""){
+				alert("비밀번호를 입력하세요!");
+				return;
+			}
+			
+			if(name == ""){
+				alert("성명을 입력하세요!");
+				return;
+			}
+			
+			if(nickname == ""){
+				alert("사용자 이름을 입력하세요!");
+				return;
+			}
+			
+			$.ajax({
+				type:"post"
+				, url:"/user/join"
+				, data:{"loginId":id, "password":password, "name":name, "nickname":nickname}
+				, success:function(response){
+					if(response.result == "success"){
+						location.href = "/user/login-view";
+					} else{
+						alert("회원 가입 실패!")
+					}
+				}
+				, error:function(){
+					alert("회원 가입 에러!")
+				}
+			})
+		});
+	</script>
 </html>
