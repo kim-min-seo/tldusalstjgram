@@ -2,7 +2,7 @@ package com.minse0.tldusalstjgram.user.service;
 
 import org.springframework.stereotype.Service;
 
-import com.minse0.tldusalstjgram.common.MD5HashingEncoder;
+import com.minse0.tldusalstjgram.common.SHA256HashingEncoder;
 import com.minse0.tldusalstjgram.user.domain.User;
 import com.minse0.tldusalstjgram.user.repository.UserRepository;
 
@@ -23,7 +23,7 @@ public class UserService {
 				, String nickname) {
 			
 			
-			String hashingPassword = MD5HashingEncoder.encode(password);
+			String hashingPassword = SHA256HashingEncoder.encode(password);
 			
 			int count = userRepository.insertUser(loginId, hashingPassword, name, nickname);
 			
@@ -34,8 +34,8 @@ public class UserService {
 			}
 		}
 		
-		public User getUserByLoginId(String loginId) {
-		    return userRepository.selectUserByLoginId(loginId);
-		}
+		 public boolean isDuplicatedId(String loginId) {
+		        return userRepository.countUserByLoginId(loginId) > 0;
+		    }
 
 }

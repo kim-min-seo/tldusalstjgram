@@ -23,9 +23,9 @@
 	 )		
 	</insert>
 	
-	<select id="selectUserByLoginId" parameterType="String" resultType="com.minse0.tldusalstjgram.user.domain.User">
-    SELECT * FROM `user`
-    WHERE loginId = #{loginId}
-</select>
+	<select id="countUserByLoginId" resultType="int" parameterType="string">
+        SELECT COUNT(*) FROM `user`
+        WHERE loginId = #{loginId}
+    </select>
 	
 </mapper> 

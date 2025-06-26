@@ -12,11 +12,14 @@
 	    <div class="row gx-2 mb-4">
 	      <div class="col-8">
 	        <input type="text" class="form-control rounded-3" id="idInput" placeholder="아이디">
+	        <div id="duplicateText" class="small text-danger d-none">중복된 아이디 입니다.</div>
+			<div id="availableText" class="small text-success d-none">사용가능한 아이디입니다.</div>
 	      </div>
 	      <div class="col-4">
 	        <button type="button" class="btn btn-dark w-100 rounded-3" id="duplicateBtn">중복확인</button>
 	      </div>
 	    </div>
+		
 	
 	    <input type="password" class="form-control mb-4 rounded-3" id="passwordInput" placeholder="비밀번호">
 	    <input type="text" class="form-control mb-4 rounded-3" id="nameInput" placeholder="성명">
@@ -46,10 +49,12 @@
 	        url: "/user/is-duplicated-id",
 	        data: { loginId: id },
 	        success: function (response) {
-	          if (response.result === true) {
-	            alert("이미 사용 중인 아이디입니다.");
+	          if (response.result === "fail") {
+		            $("#duplicateText").removeClass("d-none");
+					$("#availableText").addClass("d-none");
 	          } else {
-	            alert("사용 가능한 아이디입니다.");
+					$("#availableText").removeClass("d-none");
+					$("#duplicateText").addClass("d-none");
 	          }
 	        },
 	        error: function () {

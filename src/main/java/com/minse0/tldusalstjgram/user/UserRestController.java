@@ -41,19 +41,14 @@ public class UserRestController {
 	}
 	
 	@GetMapping("/is-duplicated-id")
-	public Map<String, Object> isDuplicatedId(@RequestParam("loginId") String loginId) {
-	    Map<String, Object> result = new HashMap<>();
-	    
-	    User user = userService.getUserByLoginId(loginId);
-	    if(user != null) {
-	    	result.put("code", 1);
-	    	result.put("result", true);
-	    } else {
-	    	result.put("code", 1);
-	    	result.put("result", false);
-	    }
-	    return result;
-	
-	}
+	 public Map<String, String> isDuplicatedId(@RequestParam String loginId) {
+        Map<String, String> resultMap = new HashMap<>();
+        if (userService.isDuplicatedId(loginId)) {
+            resultMap.put("result", "fail"); 
+        } else {
+            resultMap.put("result", "success"); 
+        }
+        return resultMap;
+    }
 	
 }

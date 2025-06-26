@@ -2,6 +2,7 @@ package com.minse0.tldusalstjgram.user.domain;
 
 import java.time.LocalDateTime;
 
+
 public class User {
 	private int id;
 	private String loginId;
