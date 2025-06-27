@@ -38,6 +38,16 @@
 	  $(document).ready(function () {
 		  
 		  let isIdValid = false, lastCheckId = "";
+		
+		  $("#idInput").on("input", function(){
+			  // 중복확인 과정 초기화
+			  lastCheckId = "";
+			  isIdValid = false;
+			  
+			  $("#availableText").addClass("d-none");
+			  $("#duplicateText").addClass("d-none");
+		  });
+		  
 	    $("#duplicateBtn").on("click", function () {
 	      const id = $("#idInput").val().trim();
 
@@ -93,10 +103,16 @@
 	        return;
 	      }
 	      
-	      if(!isIdValid || id !== lastCheckId){
+	      if (!isIdValid && id === lastCheckId) {
+	    	  alert("아이디가 중복되었습니다.");
+	    	  return;
+	    	}
+
+	    	// 중복확인을 했는데, 그 이후 아이디를 바꿈
+	    	if (id !== lastCheckId) {
 	    	  alert("아이디 중복 확인을 다시 해주세요!");
 	    	  return;
-	      }
+	    	}
 
 	      $.ajax({
 	        type: "POST",
