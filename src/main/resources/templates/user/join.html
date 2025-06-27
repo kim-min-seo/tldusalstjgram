@@ -36,6 +36,8 @@
 
 	<script layout:fragment="script">
 	  $(document).ready(function () {
+		  
+		  let isIdValid = false, lastCheckId = "";
 	    $("#duplicateBtn").on("click", function () {
 	      const id = $("#idInput").val().trim();
 
@@ -49,12 +51,17 @@
 	        url: "/user/is-duplicated-id",
 	        data: { loginId: id },
 	        success: function (response) {
+	        	lastCheckId = id;
 	          if (response.result === "fail") {
 		            $("#duplicateText").removeClass("d-none");
 					$("#availableText").addClass("d-none");
+					
+					isIdValid = false;
 	          } else {
 					$("#availableText").removeClass("d-none");
 					$("#duplicateText").addClass("d-none");
+					
+					isIdValid = true;
 	          }
 	        },
 	        error: function () {
@@ -84,6 +91,11 @@
 	      if (nickname === "") {
 	        alert("사용자 이름을 입력하세요!");
 	        return;
+	      }
+	      
+	      if(!isIdValid || id !== lastCheckId){
+	    	  alert("아이디 중복 확인을 다시 해주세요!");
+	    	  return;
 	      }
 
 	      $.ajax({
