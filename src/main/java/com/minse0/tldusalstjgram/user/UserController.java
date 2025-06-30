@@ -22,12 +22,10 @@ public class UserController {
 	}
 	
 	@GetMapping("/logout")
-	public String logout(HttpServletRequest request) {
-		// 세션에 저장한 사용자 정보 삭제
-		HttpSession session = request.getSession();
-		
+	public String logout(HttpSession session) {
+	
 		session.removeAttribute("userId");
-		session.removeAttribute("userName");
+		session.removeAttribute("userNickname");
 		
 		return "redirect:/user/login-view";
 	}

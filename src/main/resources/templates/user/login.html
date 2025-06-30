@@ -10,10 +10,13 @@
 	    <div class="col-md-6 d-flex flex-column justify-content-center">
 	      <div class="user-box p-5 rounded-lg shadow-sm w-100">
 	        <h1 class="text-center mb-4">tldusalstjgram</h1>
-	        <input type="text" id="idInput" class="form-control rounded-3 mb-4 p-3" placeholder="아이디를 입력하세요">
-	        <input type="password" id="passwordInput" class="form-control rounded-3 mb-4 p-3" placeholder="비밀번호를 입력하세요">
-	        <button type="button" id="loginBtn" class="btn btn-dark rounded-3 mb-4 p-3 w-100 ">로그인</button>
-	        <div class="text-center">계정이 없으신가요? <a href="/user/join-view">가입하기</a></div>
+	        <br>
+	        <form id="loginForm">
+		        <input type="text" id="idInput" class="form-control rounded-3 mb-4 p-3" placeholder="아이디를 입력하세요">
+		        <input type="password" id="passwordInput" class="form-control rounded-3 mb-4 p-3" placeholder="비밀번호를 입력하세요">
+		        <button type="submit" id="loginBtn" class="btn btn-dark rounded-3 mb-4 p-3 w-100 ">로그인</button>
+		   	</form>
+	      	<div class="text-center">계정이 없으신가요? <a href="/user/join-view">가입하기</a></div>
 	      </div>
 	    </div>
 	
@@ -26,7 +29,9 @@
 	</section>
 	
 	<script layout:fragment="script">
-		$("#loginBtn").on("click", function(){
+		$("#loginForm").on("submit", function(e){
+			// form 태그 원래의 기능을 제거
+			e.preventDefault();
 			
 			let id = $("#idInput").val();
 			let password = $("#passwordInput").val();

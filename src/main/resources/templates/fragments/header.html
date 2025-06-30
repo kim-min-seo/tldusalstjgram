@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>header</title>
-</head>
-<body>
+
+
+
 	<header class="bg-secondary d-flex align-items-center justify-content-between px-4 py-2">
-  <h1 class=" m-0">tldusalstjgram</h1>
-  
-  <div th:if="${session.userId != null}">
-    <span class=" me-2" th:text="${session.userName}"></span>
-    <a href="/user/logout" class="text-danger text-decoration-underline fw-bold">로그아웃</a>
-  </div>
-</header>
+	  <h1 class=" m-0">tldusalstjgram</h1>
+	  
+	  <div th:if="${session.userId != null}">
+	    <span class=" me-2 fw-bold" th:text="${session.userNickname}"></span>
+	    <a href="/user/logout" class="text-danger text-decoration-underline fw-bold">로그아웃</a>
+	  </div>
+	</header>
 	
-</body>
-</html>
