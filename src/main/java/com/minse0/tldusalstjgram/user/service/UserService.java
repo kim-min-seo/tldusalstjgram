@@ -34,8 +34,17 @@ public class UserService {
 			}
 		}
 		
-		 public boolean isDuplicatedId(String loginId) {
-		        return userRepository.countUserByLoginId(loginId) > 0;
+	     public boolean isDuplicatedId(String loginId) {
+	    	 return userRepository.countUserByLoginId(loginId) > 0;
 		    }
+	     
+	     public User getUser(String loginId, String pasword) {
+	 		
+	 		String hashingPassword = SHA256HashingEncoder.encode(pasword);
+	 		
+	 		return userRepository.selectUser(loginId, hashingPassword);
+	 	}
+		 
+		 
 
 }
