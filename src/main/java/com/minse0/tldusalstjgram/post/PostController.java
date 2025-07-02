@@ -13,4 +13,5 @@ public class PostController {
 	public String postList() {
 		return "post/list";
 	}
+	//주석
 }
