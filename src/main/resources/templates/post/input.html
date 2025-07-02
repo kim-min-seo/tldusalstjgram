@@ -8,6 +8,12 @@
             <div class="card shadow-sm" style="width: 500px; min-height: 700px;">
                 <div class="card-body p-4">
                     <form th:action="@{/post/create-post}" method="post" enctype="multipart/form-data">
+                    	<div class="mb-3 d-flex align-items-center">
+						    <i class="bi bi-pencil fs-3 me-3"></i>
+						    <label for="contents" class="form-label flex-grow-1">내용</label>
+						    <textarea class="form-control" id="contents" name="contents" rows="5" required></textarea>
+						</div>
+                    	
                         <div class="mb-3 d-flex align-items-center">
                             <i class="bi bi-pencil fs-3 me-3"></i>
                             <label for="caption" class="form-label flex-grow-1">캡션 추가</label>

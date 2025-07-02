@@ -5,10 +5,7 @@
   margin: 0 auto;
 }
 
-header {
-  height: 100px;
-}
-footer {
+header, footer {
   height: 100px;
 }
 
@@ -16,9 +13,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: start;
-  padding-top: 100px; 
+  padding-top: 100px;
 }
-
 
 .user-box {
   width: 420px;
@@ -28,25 +24,90 @@ footer {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-
-input.form-control {
-  border-radius: 2rem;
-  height: 45px;
-  padding: 10px 20px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-}
-
-
-button.btn {
+input.form-control, button.btn {
   border-radius: 2rem;
   padding: 10px 20px;
-  font-weight: 500;
 }
-
 
 button.btn-dark {
   background-color: #212529;
   border: none;
   color: white;
+}
+
+.img-fluid {
+  max-width: 500px;
+  height: auto;
+}
+
+/* 게시물 리스트 */
+.post-list {
+  width: 100%;
+  margin: 20px auto;
+  max-width: 600px;
+  font-family: Arial, sans-serif;
+}
+
+/* 게시물 항목 */
+.post-item {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+/* 사용자 아이콘과 닉네임 */
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-nickname {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* 게시물 이미지 */
+.post-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* 좋아요, 댓글, 공유, 북마크 버튼 */
+.post-actions {
+  display: flex;
+  justify-content: start;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.bookmark-btn {
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.post-caption {
+  font-size: 1rem;
+  color: #555;
+}
+
+.post-caption-username {
+  font-weight: bold;
+}
+
+.post-caption-text {
+  margin-left: 10px;
 }

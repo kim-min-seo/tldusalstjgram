@@ -46,4 +46,18 @@
 	 
 	</select>
 	
+	<select id="findById" parameterType="long" resultType="com.minse0.tldusalstjgram.user.domain.User">
+	    SELECT
+	        `id`,
+	        `loginId`,
+	        `password`,
+	        `name`,
+	        `nickname`
+	        
+	    FROM `user`
+	    WHERE id = #{id}
+	</select>
+	
+	
+	
 </mapper> 

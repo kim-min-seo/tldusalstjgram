@@ -37,7 +37,7 @@ public class PostRestController {
 		long userId = (Long) session.getAttribute("userId");
 		
 		Map<String, String> resultMap = new HashMap<>();
-		if(postService.addPost(userId, caption, contents, music, tagPeople, location, audience, imageFile)) {
+		if(postService.addPost(userId, caption, contents, music, tagPeople, location, audience,imageFile)) {
 			resultMap.put("result", "success");
 		} else {
 			resultMap.put("result", "fail");

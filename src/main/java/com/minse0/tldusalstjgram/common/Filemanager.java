@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Filemanager {
 	
-	public static final String FILE_UPLOAD_PATH = "C:\\Users\\user\\Desktop\\SpingProject\\upload\\tlduaalstjgram";
+	public static final String FILE_UPLOAD_PATH = "C:\\minseo\\upload\\tldusalstjgram";
 	// 파일 저장 기능
 	// 저장된 파일을 클라이언트가 접근할 수 있는 url 경로 return
 	public static String saveFile(long userId, MultipartFile file) {
