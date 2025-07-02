@@ -29,10 +29,10 @@ public class UserRestController {
 	
 	@PostMapping("/join")
 	public Map<String, String> join(
-			@RequestParam("loginId") String loginId
-			, @RequestParam( "password") String password
-			, @RequestParam("name") String name
-			, @RequestParam( "nickname") String nickname){
+			@RequestParam String loginId
+			, @RequestParam String password
+			, @RequestParam String name
+			, @RequestParam String nickname){
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
@@ -45,7 +45,7 @@ public class UserRestController {
 	}
 	
 	@GetMapping("/is-duplicated-id")
-	 public Map<String, String> isDuplicatedId(@RequestParam("loginId") String loginId) {
+	 public Map<String, String> isDuplicatedId(@RequestParam String loginId) {
         Map<String, String> resultMap = new HashMap<>();
         if (userService.isDuplicatedId(loginId)) {
             resultMap.put("result", "fail"); 
@@ -58,8 +58,8 @@ public class UserRestController {
 	
 	@PostMapping("/login")
 	public Map<String, String> login(
-			@RequestParam("loginId") String loginId
-			, @RequestParam( "password") String password
+			@RequestParam String loginId
+			, @RequestParam String password
 			, HttpSession session){
 		
 		User user = userService.getUser(loginId, password);
