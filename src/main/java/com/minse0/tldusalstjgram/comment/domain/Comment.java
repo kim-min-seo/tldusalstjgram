@@ -1,19 +1,18 @@
-package com.minse0.tldusalstjgram.post.domain;
+package com.minse0.tldusalstjgram.comment.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.minse0.tldusalstjgram.comment.domain.Comment;
+import com.minse0.tldusalstjgram.post.domain.Post;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,28 +23,23 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="`post`")
+@Table(name="`user_comments`")
 @Entity
 @Getter
 @Setter
-public class Post {
+public class Comment {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	
 	private long id;
 	private long userId;
-	private String contents;
-	private String imagePath;
-	private String caption;
-	private String music;
-	private String tagPeople;
-	private String location;
-	private String audience;
 	
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-	private List<Comment> comments;  
-   
+	@ManyToOne
+    @JoinColumn(name = "postId", referencedColumnName = "id", nullable = false)
+    private Post post;
+	private String comments;
+	
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	
