@@ -2,14 +2,19 @@ package com.minse0.tldusalstjgram.dto;
 
 import com.minse0.tldusalstjgram.post.domain.Post;
 
+
 import lombok.Getter;
 import lombok.Setter;
+
 
 @Getter
 @Setter
 public class PostDTO {
 	
 	 	private long id;
+	 	private long userId;
+	 	private String loginId;
+	 	
 	    private String caption;
 	    private String contents;
 	    private String music;
@@ -28,6 +33,6 @@ public class PostDTO {
 	        this.location = post.getLocation();
 	        this.audience = post.getAudience();
 	        this.imagePath = post.getImagePath();
-	        this.nickname = nickname;  // nickname 할당
+	        this.nickname = nickname;  
 	    }
 }

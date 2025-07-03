@@ -41,8 +41,19 @@
             <strong th:text="${post.nickname}" class="post-caption-username me-1"></strong>
             <span th:text="${post.caption}" class="post-caption-text"></span>
         </div>
-
+		
+		
+		<div class="comment-input-area d-flex mt-2">
+            <input type="text" class="form-control comment-input"  placeholder="댓글을 입력하세요" />
+            <button class="btn btn-dark ms-2 btn-circle">
+                <i class="bi bi-arrow-up"></i> 
+            </button>
+        </div>
+        
     </div>
+    
+    
+	
     
     <div class="d-flex justify-content-center mt-4">
         <a href="/post/create" class="btn btn-dark w-50">게시물 작성</a>
