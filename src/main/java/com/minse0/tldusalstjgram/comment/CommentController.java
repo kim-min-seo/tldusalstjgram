@@ -4,8 +4,12 @@ package com.minse0.tldusalstjgram.comment;
 
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,4 +66,28 @@ public class CommentController {
             return "redirect:/post/create";  
         }
     }
+    
+    @DeleteMapping("/comments/delete")
+    public Map<String, String> deleteComment(@RequestParam long commentId, HttpSession session) {
+        Map<String, String> resultMap = new HashMap<>();
+
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", "로그인 후 댓글을 삭제할 수 있습니다.");
+            return resultMap;
+        }
+
+        boolean isDeleted = commentService.deleteComment(commentId);
+        
+        if (isDeleted) {
+            resultMap.put("result", "success");
+        } else {
+            resultMap.put("result", "fail");
+        }
+
+        return resultMap;
+    }
+
+    
 }

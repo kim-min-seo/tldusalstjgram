@@ -6,24 +6,26 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.minse0.tldusalstjgram.comment.domain.Comment;
+import com.minse0.tldusalstjgram.comment.repository.CommentRepository;
 import com.minse0.tldusalstjgram.comment.service.CommentService;
 
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/comments")
 public class CommentRestController {
 
     private final CommentService commentService;
+    private final CommentRepository commentRepository;
 
-    public CommentRestController(CommentService commentService) {
+    public CommentRestController(CommentService commentService, CommentRepository commentRepository) {
         this.commentService = commentService;
+        this.commentRepository = commentRepository;
     }
 
     @PostMapping("/add")
@@ -53,8 +55,32 @@ public class CommentRestController {
     public Map<String, String> deleteComment(@RequestParam long commentId, HttpSession session) {
         Map<String, String> resultMap = new HashMap<>();
         
-        long userId = (Long) session.getAttribute("userId");
+        // 세션에서 userId 가져오기
+        Long userId = (Long) session.getAttribute("userId");
 
+        // 로그인 여부 확인
+        if (userId == null) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", "로그인 후 사용 가능합니다.");
+            return resultMap;
+        }
+
+        // 댓글 찾기
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if (comment == null) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", "댓글을 찾을 수 없습니다.");
+            return resultMap;
+        }
+
+        // 댓글 작성자와 삭제 요청자가 동일한지 확인
+        if (userId != comment.getUser().getId()) {
+            resultMap.put("result", "fail");
+            resultMap.put("message", "삭제 권한이 없습니다.");
+            return resultMap;
+        }
+
+       
         boolean isDeleted = commentService.deleteComment(commentId);
         
         if (isDeleted) {
@@ -66,20 +92,6 @@ public class CommentRestController {
         return resultMap;
     }
 
-    @PutMapping("/edit")
-    public Map<String, String> updateComment(@RequestParam long commentId, @RequestParam String newCommentText, HttpSession session) {
-        Map<String, String> resultMap = new HashMap<>();
-        
-        long userId = (Long) session.getAttribute("userId");
 
-        boolean isUpdated = commentService.updateComment(commentId, newCommentText);
-        
-        if (isUpdated) {
-            resultMap.put("result", "success");
-        } else {
-            resultMap.put("result", "fail");
-        }
-
-        return resultMap;
-    }
+    
 }
