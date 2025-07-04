@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.minse0.tldusalstjgram.post.domain.Post;
+import com.minse0.tldusalstjgram.user.domain.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +34,11 @@ public class Comment {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	
 	private long id;
-	private long userId;
+	
+	@ManyToOne
+	@JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
+	private User user;
+
 	
 	@ManyToOne
     @JoinColumn(name = "postId", referencedColumnName = "id", nullable = false)

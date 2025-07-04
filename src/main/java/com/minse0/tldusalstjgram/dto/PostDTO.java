@@ -1,7 +1,9 @@
 package com.minse0.tldusalstjgram.dto;
 
-import com.minse0.tldusalstjgram.post.domain.Post;
+import java.util.List;
 
+import com.minse0.tldusalstjgram.comment.domain.Comment;
+import com.minse0.tldusalstjgram.post.domain.Post;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,8 +25,9 @@ public class PostDTO {
 	    private String audience;
 	    private String imagePath;
 	    private String nickname;
+	    private List<Comment> comments;
 	    
-	    public PostDTO(Post post, String nickname) {
+	    public PostDTO(Post post, String nickname, List<Comment> comments) {
 	        this.id = post.getId();
 	        this.caption = post.getCaption();
 	        this.contents = post.getContents();
@@ -34,5 +37,6 @@ public class PostDTO {
 	        this.audience = post.getAudience();
 	        this.imagePath = post.getImagePath();
 	        this.nickname = nickname;  
+	        this.comments = comments;
 	    }
 }

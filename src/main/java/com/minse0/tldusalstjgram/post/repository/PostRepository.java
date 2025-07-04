@@ -13,6 +13,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	// WHERE `userId` = #{}
 		//public List<Post> findByUserId(long userId, Sort sort);
 		
-		public Page<Post> findAll(Pageable pageable);
+		public 	Page<Post> findAll(Pageable pageable);
 		public  List<Post> findAll();
 }

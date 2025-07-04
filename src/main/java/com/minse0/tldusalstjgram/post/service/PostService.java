@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.minse0.tldusalstjgram.comment.domain.Comment;
+import com.minse0.tldusalstjgram.comment.service.CommentService;
 import com.minse0.tldusalstjgram.common.Filemanager;
 import com.minse0.tldusalstjgram.dto.PostDTO;
 import com.minse0.tldusalstjgram.post.domain.Post;
@@ -24,25 +26,33 @@ public class PostService {
 
     private PostRepository postRepository;
     private UserRepository userRepository;
+    private final CommentService commentService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, CommentService commentService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.commentService = commentService;
     }
+    
+    public List<Post> getAllPosts() {
+        return postRepository.findAll(); 
+    }
+
 
    
     public List<PostDTO> getPostLists(long userId, Pageable pageable) {
-        // createdAt 기준으로 내림차순 정렬을 추가하여 pageable을 생성
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("createdAt")));
+        
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("userId")));
 
-        // 페이징된 게시글 리스트 가져오기
+        
         Page<Post> postPage = postRepository.findAll(sortedPageable);
 
-        // 결과를 PostDTO로 변환하여 반환
+     
         List<PostDTO> postDTOs = new ArrayList<>();
         for (Post post : postPage.getContent()) {
-            User user = userRepository.findById(post.getUserId());
-            PostDTO postDTO = new PostDTO(post, user.getNickname());
+            List<Comment> comments = commentService.getCommentsByPost(post.getId()); // 댓글 가져오기
+            String nickname = post.getUser().getNickname(); // Post 객체에서 User의 nickname 가져오기
+            PostDTO postDTO = new PostDTO(post, nickname, comments); // 댓글 포함된 PostDTO 생성
             postDTOs.add(postDTO);
         }
 
@@ -74,7 +84,7 @@ public class PostService {
         }
 
         Post post = Post.builder()
-                .userId(userId)
+        		.user(user)
                 .caption(caption)
                 .contents(contents)
                 .imagePath(imagePath)

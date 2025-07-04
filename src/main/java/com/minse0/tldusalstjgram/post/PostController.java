@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.minse0.tldusalstjgram.comment.service.CommentService;
 import com.minse0.tldusalstjgram.dto.PostDTO;
 import com.minse0.tldusalstjgram.post.service.PostService;
 
@@ -22,9 +23,11 @@ import jakarta.servlet.http.HttpSession;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/create")
@@ -40,14 +43,14 @@ public class PostController {
             @RequestParam(defaultValue = "10") int size  
     ) {
         long userId = (Long) session.getAttribute("userId");
-
+        
        
         Pageable pageable = PageRequest.of(page, size);
-
-      
+        
         List<PostDTO> postDTOs = postService.getPostLists(userId, pageable);
-
-       
+        
+        
+   
         model.addAttribute("posts", postDTOs);
         return "post/list";
     }

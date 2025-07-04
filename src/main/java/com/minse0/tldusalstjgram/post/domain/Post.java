@@ -1,19 +1,18 @@
 package com.minse0.tldusalstjgram.post.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.minse0.tldusalstjgram.comment.domain.Comment;
+import com.minse0.tldusalstjgram.user.domain.User;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +33,10 @@ public class Post {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	
 	private long id;
-	private long userId;
+	
+	@ManyToOne
+ 	@JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
+ 	private User user;  // User 객체와의 관계 설정
 	private String contents;
 	private String imagePath;
 	private String caption;
@@ -43,8 +45,7 @@ public class Post {
 	private String location;
 	private String audience;
 	
-	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-	private List<Comment> comments;  
+	
    
 	@CreationTimestamp
 	private LocalDateTime createdAt;
