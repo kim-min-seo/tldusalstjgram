@@ -14,6 +14,7 @@ import com.minse0.tldusalstjgram.comment.domain.Comment;
 import com.minse0.tldusalstjgram.comment.service.CommentService;
 import com.minse0.tldusalstjgram.common.Filemanager;
 import com.minse0.tldusalstjgram.dto.PostDTO;
+import com.minse0.tldusalstjgram.like.service.LikeService;
 import com.minse0.tldusalstjgram.post.domain.Post;
 import com.minse0.tldusalstjgram.post.repository.PostRepository;
 import com.minse0.tldusalstjgram.user.domain.User;
@@ -27,11 +28,13 @@ public class PostService {
     private PostRepository postRepository;
     private UserRepository userRepository;
     private final CommentService commentService;
+    private final LikeService likeService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository, CommentService commentService) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, CommentService commentService, LikeService likeService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.commentService = commentService;
+        this.likeService = likeService;
     }
     
     public List<Post> getAllPosts() {
@@ -50,6 +53,9 @@ public class PostService {
      
         List<PostDTO> postDTOs = new ArrayList<>();
         for (Post post : postPage.getContent()) {
+        	
+        	int likeCount = likeService.likeCountByPostId(post.getId());
+        	
             List<Comment> comments = commentService.getCommentsByPost(post.getId()); // 댓글 가져오기
             String nickname = post.getUser().getNickname(); // Post 객체에서 User의 nickname 가져오기
             PostDTO postDTO = new PostDTO(post, nickname, comments); // 댓글 포함된 PostDTO 생성

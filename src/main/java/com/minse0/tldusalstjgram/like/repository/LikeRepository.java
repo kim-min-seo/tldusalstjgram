@@ -6,6 +6,6 @@ import com.minse0.tldusalstjgram.like.domain.Like;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-	
+	public int countBypostId(long postId);
 
 }

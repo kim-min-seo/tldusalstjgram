@@ -17,6 +17,11 @@ public class PostDTO {
 	 	private long userId;
 	 	private String loginId;
 	 	
+	 	private int likeCount;
+	 	private boolean isLike;
+	 	//댓글 목록
+	 	private List<Comment> commentList;
+	 	
 	    private String caption;
 	    private String contents;
 	    private String music;
