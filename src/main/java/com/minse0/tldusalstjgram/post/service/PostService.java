@@ -42,7 +42,7 @@ public class PostService {
    
     public List<PostDTO> getPostLists(long userId, Pageable pageable) {
         
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("createdAt")));
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("userId")));
 
         
         Page<Post> postPage = postRepository.findAll(sortedPageable);
@@ -124,4 +124,37 @@ public class PostService {
     public Post getPost(long id) {
         return postRepository.findById(id).orElse(null);
     }
+    
+    public boolean deletePost(long postId, long userId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null || post.getUser().getId() != userId) return false;
+        postRepository.delete(post);
+        return true;
+    }
+    
+    public boolean updatePost(long postId, long userId,
+            String caption, String contents, String music,
+            String tagPeople, String location, String audience,
+            MultipartFile file) {
+        
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null || post.getUser().getId() != userId) return false;
+
+        post.setCaption(caption);
+        post.setContents(contents);
+        post.setMusic(music);
+        post.setTagPeople(tagPeople);
+        post.setLocation(location);
+        post.setAudience(audience);
+
+        if (file != null && !file.isEmpty()) {
+            String imagePath = Filemanager.saveFile(userId, file);
+            post.setImagePath(imagePath);
+        }
+
+        postRepository.save(post);
+        return true;
+    }
+
+
 }

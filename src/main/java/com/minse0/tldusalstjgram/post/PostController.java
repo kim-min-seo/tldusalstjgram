@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.minse0.tldusalstjgram.comment.service.CommentService;
 import com.minse0.tldusalstjgram.dto.PostDTO;
+import com.minse0.tldusalstjgram.post.domain.Post;
 import com.minse0.tldusalstjgram.post.service.PostService;
 
 import jakarta.servlet.http.HttpSession;
@@ -82,4 +83,33 @@ public class PostController {
         
         return "redirect:/post/create";
     }
+    @GetMapping("/update")
+    public String showUpdateForm(@RequestParam long postId, Model model) {
+        Post post = postService.getPost(postId);
+        if (post == null) return "redirect:/post/list-view";
+        model.addAttribute("post", post);
+        return "post/input"; // 기존 작성 페이지 재사용
+    }
+    
+    @PostMapping("/update-post")
+    public String updatePost(
+        @RequestParam long postId,
+        @RequestParam String caption,
+        @RequestParam String contents,
+        @RequestParam String music,
+        @RequestParam String tagPeople,
+        @RequestParam String location,
+        @RequestParam String audience,
+        @RequestParam(required=false) MultipartFile imageFile,
+        HttpSession session
+    ) {
+        long userId = (Long) session.getAttribute("userId");
+
+        if (postService.updatePost(postId, userId, caption, contents, music, tagPeople, location, audience, imageFile)) {
+            return "redirect:/post/list-view";
+        }
+        return "redirect:/post/update?postId=" + postId;
+    }
+
+
 }

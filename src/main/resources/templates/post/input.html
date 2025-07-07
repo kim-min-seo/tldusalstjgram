@@ -1,65 +1,84 @@
+<!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}">
 
-    <section layout:fragment="contents" class="bg-light py-5">
-        <div class="container d-flex justify-content-center">
-            <div class="card shadow-sm" style="width: 500px; min-height: 700px;">
-                <div class="card-body p-4">
-                    <form th:action="@{/post/create-post}" method="post" enctype="multipart/form-data">
-                    	<div class="mb-3 d-flex align-items-center">
-						    <i class="bi bi-pencil fs-3 me-3"></i>
-						    <label for="contents" class="form-label flex-grow-1">내용</label>
-						    <textarea class="form-control" id="contents" name="contents" rows="5" required></textarea>
-						</div>
-                    	
-                        <div class="mb-3 d-flex align-items-center">
-                            <i class="bi bi-pencil fs-3 me-3"></i>
-                            <label for="caption" class="form-label flex-grow-1">캡션 추가</label>
-                            <input type="text" class="form-control" id="caption" name="caption" required>
-                        </div>
-
-                        <div class="mb-3 d-flex align-items-center">
-                            <i class="bi bi-music-note fs-3 me-3"></i>
-                            <label for="music" class="form-label flex-grow-1">음악</label>
-                            <input type="text" class="form-control" id="music" name="music">
-                        </div>
-
-                        <div class="mb-3 d-flex align-items-center">
-                            <i class="bi bi-person-plus fs-3 me-3"></i>
-                            <label for="tagPeople" class="form-label flex-grow-1">사람 태그</label>
-                            <input type="text" class="form-control" id="tagPeople" name="tagPeople">
-                        </div>
-
-                        <div class="mb-3 d-flex align-items-center">
-                            <i class="bi bi-geo-alt fs-3 me-3"></i>
-                            <label for="location" class="form-label flex-grow-1">위치</label>
-                            <input type="text" class="form-control" id="location" name="location">
-                        </div>
-
-                        <div class="mb-3 d-flex align-items-center">
-                            <i class="bi bi-eye fs-3 me-3"></i>
-                            <label for="audience" class="form-label flex-grow-1">공개 대상</label>
-                            <input type="text" class="form-control" id="audience" name="audience">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="imageFile" class="form-label">이미지 업로드</label>
-                            <input type="file" class="form-control" id="imageFile" name="imageFile">
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-dark w-50">게시물 공유하기</button>
-                        </div>
-                    </form>
+<section layout:fragment="contents" class="bg-light py-5">
+    <div class="container d-flex justify-content-center">
+        <div class="card shadow-sm" style="width: 500px; min-height: 700px;">
+            <div class="card-body p-4">
+                <form th:action="${post != null} ? @{/post/update-post} : @{/post/create-post}"
+                      method="post"
+                      enctype="multipart/form-data">
                     
-                    <div class="d-flex justify-content-center mt-3">
-                        <a href="javascript:history.back()" class="btn btn-outline-secondary w-50">돌아가기</a>
+                    <!-- 수정용 postId -->
+                    <input type="hidden" name="postId" th:if="${post != null}" th:value="${post.id}" />
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-pencil fs-3 me-3"></i>
+                        <label for="contents" class="form-label flex-grow-1">내용</label>
+                        <textarea class="form-control" id="contents" name="contents" rows="5" required
+                                  th:text="${post != null} ? ${post.contents} : ''"></textarea>
                     </div>
+                    
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-pencil fs-3 me-3"></i>
+                        <label for="caption" class="form-label flex-grow-1">캡션 추가</label>
+                        <input type="text" class="form-control" id="caption" name="caption"
+                               th:value="${post != null} ? ${post.caption} : ''" required>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-music-note fs-3 me-3"></i>
+                        <label for="music" class="form-label flex-grow-1">음악</label>
+                        <input type="text" class="form-control" id="music" name="music"
+                               th:value="${post != null} ? ${post.music} : ''">
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-person-plus fs-3 me-3"></i>
+                        <label for="tagPeople" class="form-label flex-grow-1">사람 태그</label>
+                        <input type="text" class="form-control" id="tagPeople" name="tagPeople"
+                               th:value="${post != null} ? ${post.tagPeople} : ''">
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-geo-alt fs-3 me-3"></i>
+                        <label for="location" class="form-label flex-grow-1">위치</label>
+                        <input type="text" class="form-control" id="location" name="location"
+                               th:value="${post != null} ? ${post.location} : ''">
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <i class="bi bi-eye fs-3 me-3"></i>
+                        <label for="audience" class="form-label flex-grow-1">공개 대상</label>
+                        <input type="text" class="form-control" id="audience" name="audience"
+                               th:value="${post != null} ? ${post.audience} : ''">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="imageFile" class="form-label">이미지 업로드</label>
+                        <input type="file" class="form-control" id="imageFile" name="imageFile">
+                        <div th:if="${post != null && post.imagePath != null}">
+                            <img th:src="@{${post.imagePath}}" alt="기존 이미지" class="img-fluid mt-2" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-dark w-50"
+                                th:text="${post != null} ? '수정하기' : '게시물 공유하기'">
+                            게시물 공유하기
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="d-flex justify-content-center mt-3">
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary w-50">돌아가기</a>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 </html>

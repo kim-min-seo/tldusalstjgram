@@ -9,6 +9,17 @@
         <div class="post-header d-flex align-items-center mb-2">
             <i class="bi bi-person-circle" style="font-size: 20px;"></i>
             <strong th:text="${post.nickname}" class="user-nickname ms-2"></strong>
+            
+            <div class="dropdown ms-auto">
+			  <button class="btn btn-light border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+			    <i class="bi bi-three-dots-vertical"></i>
+			  </button>
+			  <ul class="dropdown-menu">
+			    <li><a class="dropdown-item edit-post" th:data-post-id="${post.id}">수정</a></li>
+			    <li><a class="dropdown-item delete-post" th:data-post-id="${post.id}">삭제</a></li>
+			  </ul>
+			</div>
+            
         </div>
 
         <img th:src="@{${post.imagePath}}" alt="Post Image" class="post-image mb-2"/>
@@ -82,6 +93,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script layout:fragment= "script">
+	$(".edit-post").click(function () {
+		  const postId = $(this).data("post-id");
+		  window.location.href = `/post/update?postId=${postId}`;
+		});
+
+	
 	$(".heart-icon").on("click", function(){
 		let postId = $(this).data("post-id");
 		let heartIcon = $(this);
@@ -115,10 +132,10 @@
     $(document).ready(function() {
         // 댓글 폼 제출 시 AJAX 요청 보내기
         $(".comment-form").on('submit', function(e) {
-           	let postId = $(this).data("post-id");
+            e.preventDefault();
            	
-           	let comment = $("#commentInput" + postId).val();
-           	
+            let postId = $(this).find("input[name='postId']").val();
+            let comment = $(this).find("input[name='comments']").val();
             // AJAX 요청
             $.ajax({
                 type: "POST", // POST 방식
@@ -168,6 +185,28 @@
                 }
             });
         });
+        $(".delete-post").click(function () {
+        	  const postId = $(this).data("post-id");
+        	  if (confirm("정말 삭제하시겠습니까?")) {
+        	    $.ajax({
+        	      url: "/post/delete",
+        	      type: "DELETE",
+        	      data: { postId: postId },
+        	      success: function (response) {
+        	        if (response.result === "success") {
+        	          alert("삭제 완료");
+        	          location.reload();
+        	        } else {
+        	          alert("삭제 실패");
+        	        }
+        	      },
+        	      error: function () {
+        	        alert("삭제 중 오류 발생");
+        	      }
+        	    });
+        	  }
+        	});
+
 
     });
 </script>
