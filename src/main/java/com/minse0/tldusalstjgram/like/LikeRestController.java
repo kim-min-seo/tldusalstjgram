@@ -23,18 +23,35 @@ public class LikeRestController {
     }
 	
 	@PostMapping("/like")
-	public Map<String, String> like(
+	public Map<String, Object> like(
 			@RequestParam long postId
 			, HttpSession session
 			){
-		long userId = (Long) session.getAttribute("userId");
 		
-		Map<String, String> resultMap = new HashMap<>();
-		if(likeService.addLike(userId, postId)) {
-			resultMap.put("result", "success");
-		} else {
-			resultMap.put("result", "fail");
-		}
-		return resultMap;
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		
+		 try {
+	            Long userId = (Long) session.getAttribute("userId");
+
+	            if (userId == null) {
+	                resultMap.put("result", "fail");
+	                resultMap.put("reason", "로그인 안함");
+	                return resultMap;
+	            }
+
+	            boolean isLiked = likeService.toggleLike(userId, postId);
+	            int likeCount = likeService.likeCountByPostId(postId);
+
+	            resultMap.put("result", "success");
+	            resultMap.put("isLike", isLiked);
+	            resultMap.put("likeCount", likeCount);
+
+	        } catch (Exception e) {
+	            resultMap.put("result", "fail");
+	            resultMap.put("reason", e.getMessage());
+	        }
+
+	        return resultMap;
 	}
 }

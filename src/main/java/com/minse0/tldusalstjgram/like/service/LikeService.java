@@ -18,28 +18,31 @@ public class LikeService {
 		this.likeRepository = likeRepository;
 	}
 	
-	public boolean addLike(
-			long userId
-			, long postId
-			) {
-		Like like = Like.builder()
-		.userId(userId)
-		.postId(postId)
-		.createdAt(LocalDateTime.now()) 
-		.build();
-		
-		try {
-			likeRepository.save(like);
-        } catch (PersistenceException e) {
-            return false;
+	public boolean toggleLike(long userId, long postId) {
+        Like existingLike = likeRepository.findByUserIdAndPostId(userId, postId);
+        if (existingLike != null) {
+            likeRepository.delete(existingLike);
+            return false; // 좋아요 취소
+        } else {
+            Like like = Like.builder()
+                    .userId(userId)
+                    .postId(postId)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            try {
+                likeRepository.save(like);
+                return true; // 좋아요 추가
+            } catch (PersistenceException e) {
+                return false;
+            }
         }
-
-        return true;
-		
-		
-	}
+    }
 	
 	public int likeCountByPostId(long postId) {
 		return likeRepository.countBypostId(postId);
 	}
+	
+	public boolean isLikedByUser(long userId, long postId) {
+        return likeRepository.existsByUserIdAndPostId(userId, postId);
+    }
 }

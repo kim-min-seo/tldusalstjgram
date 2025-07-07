@@ -52,13 +52,27 @@ public class PostService {
 
      
         List<PostDTO> postDTOs = new ArrayList<>();
+        
         for (Post post : postPage.getContent()) {
-        	
-        	int likeCount = likeService.likeCountByPostId(post.getId());
-        	
-            List<Comment> comments = commentService.getCommentsByPost(post.getId()); // 댓글 가져오기
-            String nickname = post.getUser().getNickname(); // Post 객체에서 User의 nickname 가져오기
-            PostDTO postDTO = new PostDTO(post, nickname, comments); // 댓글 포함된 PostDTO 생성
+            int likeCount = likeService.likeCountByPostId(post.getId());
+            List<Comment> comments = commentService.getCommentsByPost(post.getId());
+            String nickname = post.getUser().getNickname();
+
+            PostDTO postDTO = PostDTO.builder()
+                .id(post.getId())
+                .userId(post.getUser().getId())
+                .caption(post.getCaption())
+                .contents(post.getContents())
+                .music(post.getMusic())
+                .tagPeople(post.getTagPeople())
+                .location(post.getLocation())
+                .audience(post.getAudience())
+                .imagePath(post.getImagePath())
+                .nickname(nickname)
+                .comments(comments)
+                .likeCount(likeCount)
+                .build();
+
             postDTOs.add(postDTO);
         }
 

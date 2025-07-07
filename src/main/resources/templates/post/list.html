@@ -16,7 +16,9 @@
         <div class="post-actions d-flex justify-content-between align-items-center gap-3 mb-2">
             <div class="left-actions d-flex align-items-center gap-3">
                 <button class="btn btn-light border-0 p-0 d-flex align-items-center">
-                    <i class="bi bi-heart me-1 heart-icon " th:data-post-id="${post.id}"></i><span>좋아요 개</span> 
+                    <i class="bi bi-heart me-1 heart-icon " th:data-post-id="${post.id}"></i>
+                    <span>좋아요 <span th:id="'likeCount' + ${post.id}" th:text="${post.likeCount}">0</span>개</span>
+                    
                 </button>
                 <button class="btn btn-light border-0 p-0 d-flex align-items-center">
                     <i class="bi bi-chat-dots me-1"></i> 
@@ -78,24 +80,30 @@
 	$(".heart-icon").on("click", function(){
 		let postId = $(this).data("post-id");
 		let heartIcon = $(this);
+		let likeCountSpan = $("#likeCount" + postId);
 		
 		$.ajax({
 			type:"POST"
 			, url : "/post/like"
 			, data : {"postId" : postId}
 			, success:function(response){
-				if(response.result == "success"){
-					heartIcon.toggleClass("liked").css("color", $(this).hasClass("liked") ? "red" : "gray");
-					
-				} else{
-					alert("좋아요 실패");
+				if(response.result === "success"){
+					if (response.isLike) {
+						heartIcon.addClass("liked").css("color", "red");
+					} else {
+						heartIcon.removeClass("liked").css("color", "gray");
+					}
+					likeCountSpan.text(response.likeCount); // 좋아요 수 즉시 업데이트
+				} else {
+					alert("좋아요 실패: " + (response.reason || ""));
 				}
-			}
-			, error: function(){
+			},
+			error: function(){
 				alert("좋아요 에러!");
 			}
-		})
+		});
 	});
+
 
     $(document).ready(function() {
         // 댓글 폼 제출 시 AJAX 요청 보내기
