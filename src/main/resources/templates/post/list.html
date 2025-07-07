@@ -16,11 +16,14 @@
         <div class="post-actions d-flex justify-content-between align-items-center gap-3 mb-2">
             <div class="left-actions d-flex align-items-center gap-3">
                 <button class="btn btn-light border-0 p-0 d-flex align-items-center">
-                    <i class="bi bi-heart me-1 heart-icon " th:data-post-id="${post.id}"></i>
+                   
+                    <i th:class="${post.isLike} ? 'bi bi-heart-fill me-1 heart-icon text-danger' : 'bi bi-heart me-1 heart-icon text-secondary'" 
+  					   th:data-post-id="${post.id}"></i>
+                    
                     <span>좋아요 <span th:id="'likeCount' + ${post.id}" th:text="${post.likeCount}">0</span>개</span>
                     
                 </button>
-                <button class="btn btn-light border-0 p-0 d-flex align-items-center">
+                <button class="btn btn-light border-0 p-0 d-flex align-items-center ">
                     <i class="bi bi-chat-dots me-1"></i> 
                 </button>
                 <button class="btn btn-light border-0 p-0 d-flex align-items-center">
@@ -37,18 +40,20 @@
             <span th:text="${post.caption}" class="post-caption-text"></span>
         </div>
 
-        <!-- 댓글 목록 -->
-        <div class="comment-container" id="comment-container-${post.id}" th:each="comment : ${post.comments}">
-            <p>
-            	<strong th:text="${comment.user.nickname}">작성자</strong>: 
-            	<span th:text="${comment.comments}">댓글 내용</span>
-            	
-            	 <button type="button" class="btn btn-danger btn-sm ms-2 delete-comment" 
-		                th:data-comment-id="${comment.id}" th:data-post-id="${post.id}">
-		            삭제
-		        </button>
-            </p>
-        </div>
+       <!-- 댓글 목록 -->
+		<div class="comment-container" th:id="'comment-container-' + ${post.id}">
+		    <div th:each="comment : ${post.comments}">
+		        <p>
+		            <strong th:text="${comment.user.nickname}">작성자</strong>: 
+		            <span th:text="${comment.comments}">댓글 내용</span>
+		            <button type="button" class="btn btn-danger btn-sm ms-2 delete-comment" 
+		                    th:data-comment-id="${comment.id}" th:data-post-id="${post.id}">
+		                삭제
+		            </button>
+		        </p>
+		    </div>
+		</div>
+		       
 
         <!-- 댓글 입력 폼 -->
 		<div class="comment-input-area d-flex mt-2">
@@ -89,11 +94,13 @@
 			, success:function(response){
 				if(response.result === "success"){
 					if (response.isLike) {
-						heartIcon.addClass("liked").css("color", "red");
-					} else {
-						heartIcon.removeClass("liked").css("color", "gray");
-					}
-					likeCountSpan.text(response.likeCount); // 좋아요 수 즉시 업데이트
+				        heartIcon.removeClass("bi-heart text-secondary")
+				                 .addClass("bi-heart-fill text-danger");
+				    } else {
+				        heartIcon.removeClass("bi-heart-fill text-danger")
+				                 .addClass("bi-heart text-secondary");
+				    }
+				    likeCountSpan.text(response.likeCount);
 				} else {
 					alert("좋아요 실패: " + (response.reason || ""));
 				}
@@ -107,7 +114,7 @@
 
     $(document).ready(function() {
         // 댓글 폼 제출 시 AJAX 요청 보내기
-        $(".comment-form").on('click', function(e) {
+        $(".comment-form").on('submit', function(e) {
            	let postId = $(this).data("post-id");
            	
            	let comment = $("#commentInput" + postId).val();
@@ -115,7 +122,7 @@
             // AJAX 요청
             $.ajax({
                 type: "POST", // POST 방식
-                url: "/post/list/comments", // 댓글 추가할 URL
+                url: "/comments/add", // 댓글 추가할 URL
                 data: {
                     "postId": postId,
                     "comments": commentText

@@ -57,14 +57,15 @@ public class PostController {
 
     @PostMapping("/create-post")
     public String createPost(
-            String caption,
-            String contents,
-            String music,
-            String tagPeople,
-            String location,
-            String audience,
-            HttpSession session,
-            MultipartFile imageFile
+    		 @RequestParam String caption,
+    		 @RequestParam String contents,
+    		 @RequestParam String music,
+    		 @RequestParam String tagPeople,
+    		 @RequestParam String location,
+    		 @RequestParam String audience,
+    		 @RequestParam MultipartFile imageFile,
+    		 	HttpSession session
+    		 
     ) {
         long userId = (Long) session.getAttribute("userId");
 

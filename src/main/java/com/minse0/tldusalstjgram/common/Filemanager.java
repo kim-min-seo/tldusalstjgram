@@ -36,7 +36,8 @@ public class Filemanager {
 		
 		File directory = new File(directoryPath);
 		
-		if(!directory.mkdir()) {
+		if(!directory.mkdirs()) {
+			 System.out.println("[saveFile] 디렉토리 생성 실패: " + directoryPath);
 			// 디렉토리 생성 실패
 			return null;
 		}

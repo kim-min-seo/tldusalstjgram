@@ -64,7 +64,8 @@ public class CommentService {
     public List<Comment> getCommentsByPost(long postId) {
         return commentRepository.findByPostId(postId);
     }
-
+    
+   
     
 
 }

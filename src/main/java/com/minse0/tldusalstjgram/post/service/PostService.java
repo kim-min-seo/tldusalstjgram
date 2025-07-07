@@ -21,21 +21,18 @@ import com.minse0.tldusalstjgram.user.domain.User;
 import com.minse0.tldusalstjgram.user.repository.UserRepository;
 
 import jakarta.persistence.PersistenceException;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class PostService {
 
-    private PostRepository postRepository;
-    private UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final CommentService commentService;
     private final LikeService likeService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository, CommentService commentService, LikeService likeService) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.commentService = commentService;
-        this.likeService = likeService;
-    }
+    
     
     public List<Post> getAllPosts() {
         return postRepository.findAll(); 
@@ -45,7 +42,7 @@ public class PostService {
    
     public List<PostDTO> getPostLists(long userId, Pageable pageable) {
         
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("userId")));
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("createdAt")));
 
         
         Page<Post> postPage = postRepository.findAll(sortedPageable);

@@ -8,5 +8,7 @@ import com.minse0.tldusalstjgram.comment.domain.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 	
-	List<Comment> findByPostId(Long postId);
+	public List<Comment> findByPostId(long postId);
+	
+	
 }

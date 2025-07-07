@@ -36,7 +36,7 @@ public class Post {
 	
 	@ManyToOne
  	@JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
- 	private User user;  // User 객체와의 관계 설정
+ 	private User user;  
 	private String contents;
 	private String imagePath;
 	private String caption;
