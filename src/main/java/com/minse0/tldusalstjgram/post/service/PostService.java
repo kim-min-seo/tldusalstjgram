@@ -52,6 +52,7 @@ public class PostService {
         
         for (Post post : postPage.getContent()) {
             int likeCount = likeService.likeCountByPostId(post.getId());
+            boolean isLike = likeService.isLikedByUser(userId, post.getId()); 
             List<Comment> comments = commentService.getCommentsByPost(post.getId());
             String nickname = post.getUser().getNickname();
 
@@ -68,6 +69,7 @@ public class PostService {
                 .nickname(nickname)
                 .comments(comments)
                 .likeCount(likeCount)
+                .isLike(isLike)
                 .build();
 
             postDTOs.add(postDTO);
