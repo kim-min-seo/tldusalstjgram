@@ -14,15 +14,19 @@ public class LikeService {
 	
 	private final LikeRepository likeRepository;
 	
+	
 	public LikeService(LikeRepository likeRepository) {
 		this.likeRepository = likeRepository;
 	}
+	public void deleteLikesByPostId(long postId) {
+        likeRepository.deleteByPostId(postId);
+    }
 	
 	public boolean toggleLike(long userId, long postId) {
         Like existingLike = likeRepository.findByUserIdAndPostId(userId, postId);
         if (existingLike != null) {
             likeRepository.delete(existingLike);
-            return false; // 좋아요 취소
+            return false; 
         } else {
             Like like = Like.builder()
                     .userId(userId)
@@ -31,7 +35,7 @@ public class LikeService {
                     .build();
             try {
                 likeRepository.save(like);
-                return true; // 좋아요 추가
+                return true; 
             } catch (PersistenceException e) {
                 return false;
             }
@@ -45,4 +49,7 @@ public class LikeService {
 	public boolean isLikedByUser(long userId, long postId) {
         return likeRepository.existsByUserIdAndPostId(userId, postId);
     }
+	
+	
+
 }

@@ -11,6 +11,7 @@
             <strong th:text="${post.nickname}" class="user-nickname ms-2"></strong>
             
             <div class="dropdown ms-auto">
+            
 			  <button class="btn btn-light border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown">
 			    <i class="bi bi-three-dots-vertical"></i>
 			  </button>
@@ -130,7 +131,7 @@
 
 
     $(document).ready(function() {
-        // 댓글 폼 제출 시 AJAX 요청 보내기
+        
         $(".comment-form").on('submit', function(e) {
             e.preventDefault();
            	
@@ -138,15 +139,15 @@
             let comment = $(this).find("input[name='comments']").val();
             // AJAX 요청
             $.ajax({
-                type: "POST", // POST 방식
-                url: "/comments/add", // 댓글 추가할 URL
+                type: "POST", 
+                url: "/comments/add", 
                 data: {
                     "postId": postId,
-                    "comments": commentText
+                    "comments": comment
                 },
                 success: function(response) {
                     if (response.result === 'success') {
-                        // 댓글이 성공적으로 추가되었을 때
+                        
                         
                         location.reload();
                     } else {

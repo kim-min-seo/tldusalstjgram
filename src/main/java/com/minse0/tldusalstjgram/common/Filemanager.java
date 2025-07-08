@@ -66,4 +66,25 @@ public class Filemanager {
 	
 		
 	}
+	public static void removeFile(String imagePath) {
+	    if (imagePath == null || imagePath.isEmpty()) return;
+
+	    
+	    String fullPath = FILE_UPLOAD_PATH + imagePath.replace("/images", "");
+
+	    File file = new File(fullPath);
+	    if (file.exists()) {
+	        file.delete(); 
+
+	        
+	        File parentDir = file.getParentFile();
+	        if (parentDir.isDirectory() && parentDir.list().length == 0) {
+	            parentDir.delete();
+	        }
+	    }
+	}
+
+
+
+	
 }

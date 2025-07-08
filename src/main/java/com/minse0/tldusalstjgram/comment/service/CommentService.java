@@ -23,6 +23,9 @@ public class CommentService {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
+    public void deleteCommentsByPostId(long postId) {
+        commentRepository.deleteByPostId(postId);
+    }
 
    
     public boolean addComment(long postId, String commentText, long userId) {

@@ -42,7 +42,7 @@ public class PostService {
    
     public List<PostDTO> getPostLists(long userId, Pageable pageable) {
         
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("userId")));
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("createdAt")));
 
         
         Page<Post> postPage = postRepository.findAll(sortedPageable);
@@ -124,10 +124,19 @@ public class PostService {
     public Post getPost(long id) {
         return postRepository.findById(id).orElse(null);
     }
+   
     
     public boolean deletePost(long postId, long userId) {
         Post post = postRepository.findById(postId).orElse(null);
         if (post == null || post.getUser().getId() != userId) return false;
+        
+       
+        String imagePath = post.getImagePath();
+        if (imagePath != null && !imagePath.isEmpty()) {
+            Filemanager.removeFile(imagePath);
+        }
+        commentService.deleteCommentsByPostId(postId);
+        likeService.deleteLikesByPostId(postId);
         postRepository.delete(post);
         return true;
     }
